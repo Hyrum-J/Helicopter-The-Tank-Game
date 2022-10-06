@@ -14,7 +14,7 @@ public class TankMover : Mover
         m_Rigidbody = this.gameObject.GetComponent<Rigidbody>();
     }
 
-    public override void Move(Vector3 direction, float speed)
+    public override void Move(Vector3 direction, float speed, float maxSpeed, string going)
     {
         Vector3 moveVector = direction.normalized * speed * Time.deltaTime;
         m_Rigidbody.MovePosition(m_Rigidbody.position + moveVector);
@@ -24,4 +24,15 @@ public class TankMover : Mover
     {
         transform.Rotate(0, turnSpeed, 0);
     }
+
+    public override void Roll(float turnSpeed)
+    {
+        Debug.Log("Not for Tank");
+    }
+
+    public override void Fall(Vector3 direction, float speed)
+    {
+        Debug.Log("Not for Tank");
+    }
+
 }

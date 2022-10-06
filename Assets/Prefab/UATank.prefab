@@ -106,10 +106,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c31ea32977f1044ad9a647af6c35d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 5
+  acceleration: 0
+  upAcceleration: 0
+  backMoveSpeed: 2
   turnSpeed: 1
   flySpeed: 0
+  upwardSpeed: 0
+  downwardSpeed: 0
+  fallingSpeed: 0
+  backFlySpeed: 0
+  isHovering: 0
   maxHealth: 100
+  timeOfLastShot: 0
   shellPrefab: {fileID: 4220985504634533559, guid: 080a3c700cf73984094a7fb6f00df561, type: 3}
   fireForce: 1000
   damageDone: 100

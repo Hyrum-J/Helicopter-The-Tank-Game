@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TankPawn : Pawn
+public class HeliPawn : Pawn
 {
+    private bool upKeyDown = false;
+
     // Start is called before the first frame update
     protected override void Start()
     {
-        shotDelay = 2;
+        shotDelay = 0.1f;
         base.Start();
     }
 
     protected override void Update()
     {
+        if(upKeyDown == false && isHovering == false)
+        {
+            mover.Fall(transform.up, fallingSpeed);
+        }
         timeSinceLastShot = Time.time - timeOfLastShot;
         if (timeSinceLastShot > shotDelay)
         {
@@ -23,12 +29,12 @@ public class TankPawn : Pawn
 
     public override void MoveForward()
     {
-        mover.Move(transform.forward, moveSpeed, maxMoveSpeed, "forward");
+        mover.Move(transform.forward, flySpeed, maxFlySpeed, "forward");
     }
 
     public override void MoveBackward()
     {
-        mover.Move(transform.forward, -moveSpeed, maxBackwardMoveSpeed, "backward");
+        mover.Move(transform.forward, -backFlySpeed, maxBackwardFlySpeed, "backward");
     }
 
     public override void RotateClockwise()
@@ -43,27 +49,25 @@ public class TankPawn : Pawn
 
     public override void MoveUp()
     {
-        Debug.Log("Not for tank");
+        upKeyDown = true;
+        mover.Move(transform.up, upwardSpeed, maxUpwardSpeed, "up");
     }
 
     public override void MoveDown()
     {
-        Debug.Log("Not for tank");
+        mover.Move(transform.up, -downwardSpeed, fallingSpeed, "down");
     }
-
-    public override void rollRight()
-    {
-        Debug.Log("Not for tank");
-    }
-
     public override void rollLeft()
     {
-        Debug.Log("Not for tank");
+        mover.Roll(turnSpeed);
     }
-
+    public override void rollRight()
+    {
+        mover.Roll(-turnSpeed);
+    }
     public override void hover()
     {
-        Debug.Log("Not for tank");
+        isHovering = !isHovering;
     }
 
     public override void shoot()
@@ -74,6 +78,7 @@ public class TankPawn : Pawn
             timeOfLastShot = Time.time;
             canShoot = false;
         }
+        
     }
 
     public override void RotateTowards(Vector3 targetPosition)
@@ -83,12 +88,15 @@ public class TankPawn : Pawn
         Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget, Vector3.up);
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-
     }
 
     public override void changeStatus(string direction)
     {
-        Debug.Log("Not needed yet");
+        if (direction == "up")
+        {
+            upKeyDown = false;
+        }
     }
 
 }
+

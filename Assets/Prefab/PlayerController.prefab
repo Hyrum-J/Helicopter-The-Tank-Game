@@ -49,7 +49,9 @@ MonoBehaviour:
   moveBackwardKey: 115
   rotateClockwiseKey: 100
   rotateCounterClockwiseKey: 97
-  moveUpKey: 0
-  moveDownKey: 0
-  hoverKey: 0
+  moveUpKey: 113
+  moveDownKey: 101
+  rollLeftKey: 122
+  rollRightKey: 99
+  hoverKey: 120
   shootKey: 32

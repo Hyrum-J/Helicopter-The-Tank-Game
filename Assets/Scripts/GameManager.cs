@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private bool pawnPicker = false;
     public static GameManager instance;
 
     public GameObject playerControllerPrefab;
     public GameObject tankPawnPrefab;
+    public GameObject heliPawnPrefab;
     public Transform playerSpawnTransform;
 
     public List<PlayerController> players;
@@ -29,8 +31,17 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (pawnPicker == true)
+        {
+            pawnPicker = false;
+            SpawnPlayer(tankPawnPrefab);
+        }
+        else
+        {
+            pawnPicker = true;
+            SpawnPlayer(heliPawnPrefab);
+        }
 
-        SpawnPlayer();
 
     }
 
@@ -40,11 +51,11 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void SpawnPlayer()
+    private void SpawnPlayer(GameObject pawn)
     {
-
+       
         GameObject newPlayerObj = Instantiate(playerControllerPrefab, Vector3.zero, Quaternion.identity);
-        GameObject newPawnObj = Instantiate(tankPawnPrefab, playerSpawnTransform.position, playerSpawnTransform.rotation);
+        GameObject newPawnObj = Instantiate(pawn, playerSpawnTransform.position, playerSpawnTransform.rotation);
 
         Controller newController = newPlayerObj.GetComponent<Controller>();
         Pawn newPawn = newPawnObj.GetComponent<Pawn>();

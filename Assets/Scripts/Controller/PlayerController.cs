@@ -11,8 +11,12 @@ public class PlayerController : Controller
     public KeyCode rotateCounterClockwiseKey;
     public KeyCode moveUpKey;
     public KeyCode moveDownKey;
+    public KeyCode rollLeftKey;
+    public KeyCode rollRightKey;
     public KeyCode hoverKey;
     public KeyCode shootKey;
+
+     
     // Start is called before the first frame update
     public override void Start()
     {
@@ -65,7 +69,48 @@ public class PlayerController : Controller
             pawn.RotateCounterClockwise();
         }
 
-        if(Input.GetKeyDown(shootKey))
+        if(Input.GetKey(moveUpKey))
+        {
+            pawn.MoveUp();
+        }
+
+        if (Input.GetKeyUp(moveUpKey))
+        {
+            pawn.changeStatus("up");
+        }
+
+        if ( Input.GetKey(moveDownKey))
+        {
+            pawn.MoveDown();
+        }
+
+        if(Input.GetKeyDown(hoverKey))
+        {
+            if (pawn.isHovering == true)
+            {
+                pawn.isHovering = false;
+            }
+            else if (pawn.isHovering == false)
+            {
+                pawn.isHovering = true;
+            }
+            else
+            {
+                pawn.isHovering = true;
+            }
+        }
+
+        if(Input.GetKey(rollLeftKey))
+        {
+            pawn.rollLeft();
+        }    
+
+        if(Input.GetKey(rollRightKey))
+        {
+            pawn.rollRight();
+        }
+
+        if(Input.GetKey(shootKey))
         {
             pawn.shoot();
         }
