@@ -74,11 +74,6 @@ public class PlayerController : Controller
             pawn.MoveUp();
         }
 
-        if (Input.GetKeyUp(moveUpKey))
-        {
-            pawn.changeStatus("up");
-        }
-
         if ( Input.GetKey(moveDownKey))
         {
             pawn.MoveDown();

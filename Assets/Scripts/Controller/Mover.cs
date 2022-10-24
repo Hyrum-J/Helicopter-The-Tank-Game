@@ -13,6 +13,8 @@ public abstract class Mover : MonoBehaviour
 
     public abstract void Roll(float turnSpeed);
 
-    public abstract void Fall(Vector3 direction, float speed);
+    public abstract void Fall(float fallSpeed);
+
+    public abstract void Hover(float fallSpeed);
 
 }

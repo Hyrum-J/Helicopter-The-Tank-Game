@@ -59,6 +59,8 @@ public abstract class Pawn : MonoBehaviour
     //Moves the pawn
     protected Mover mover;
 
+    protected TotallyNotWhatItIs noiseMaker;
+
     //How the pawn shoots
     protected Shooter shooter;
     public float timeOfLastShot;
@@ -84,6 +86,8 @@ public abstract class Pawn : MonoBehaviour
         mover = GetComponent<Mover>();
 
         shooter = GetComponent<Shooter>();
+
+        noiseMaker = GetComponent<TotallyNotWhatItIs>();
         
     }
 
@@ -93,8 +97,6 @@ public abstract class Pawn : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        
-
 
     }
 
@@ -109,6 +111,4 @@ public abstract class Pawn : MonoBehaviour
     public abstract void hover();
     public abstract void shoot();
     public abstract void RotateTowards(Vector3 targetPosition);
-    public abstract void changeStatus(string direction);
-
 }

@@ -30,7 +30,12 @@ public class TankMover : Mover
         Debug.Log("Not for Tank");
     }
 
-    public override void Fall(Vector3 direction, float speed)
+    public override void Fall(float fallSpeed)
+    {
+        Debug.Log("Not for Tank");
+    }
+
+    public override void Hover(float fallSpeed)
     {
         Debug.Log("Not for Tank");
     }

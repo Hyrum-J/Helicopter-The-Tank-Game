@@ -73,6 +73,14 @@ public class TankPawn : Pawn
             shooter.Shoot(shellPrefab, fireForce, damageDone, shellLifespan);
             timeOfLastShot = Time.time;
             canShoot = false;
+            if (noiseMaker != null)
+            {
+                noiseMaker.currentVolumeDistance = noiseMaker.volumeDistance;
+            }
+        }
+        if (noiseMaker != null)
+        {
+            noiseMaker.currentVolumeDistance = 0;
         }
     }
 
@@ -85,10 +93,4 @@ public class TankPawn : Pawn
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
     }
-
-    public override void changeStatus(string direction)
-    {
-        Debug.Log("Not needed yet");
-    }
-
 }

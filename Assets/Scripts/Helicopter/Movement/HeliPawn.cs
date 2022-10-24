@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HeliPawn : Pawn
 {
-    private bool upKeyDown = false;
-
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -15,14 +13,18 @@ public class HeliPawn : Pawn
 
     protected override void Update()
     {
-        if(upKeyDown == false && isHovering == false)
-        {
-            mover.Fall(transform.up, fallingSpeed);
-        }
         timeSinceLastShot = Time.time - timeOfLastShot;
         if (timeSinceLastShot > shotDelay)
         {
             canShoot = true;
+        }
+        if (isHovering == false)
+        {
+            mover.Fall(-fallingSpeed);
+        }
+        else
+        {
+            mover.Hover(-fallingSpeed);
         }
         base.Update();
     }
@@ -49,7 +51,6 @@ public class HeliPawn : Pawn
 
     public override void MoveUp()
     {
-        upKeyDown = true;
         mover.Move(transform.up, upwardSpeed, maxUpwardSpeed, "up");
     }
 
@@ -89,14 +90,5 @@ public class HeliPawn : Pawn
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
     }
-
-    public override void changeStatus(string direction)
-    {
-        if (direction == "up")
-        {
-            upKeyDown = false;
-        }
-    }
-
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private bool pawnPicker = false;
+    private bool pawnPicker = true;
     public static GameManager instance;
 
     public GameObject playerControllerPrefab;
