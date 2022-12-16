@@ -55,3 +55,5 @@ MonoBehaviour:
   rollRightKey: 99
   hoverKey: 120
   shootKey: 32
+  PauseButton: 27
+  gameManager: {fileID: 2056581185289437213, guid: eabd14893e3659c4597c73a6c5479319, type: 3}

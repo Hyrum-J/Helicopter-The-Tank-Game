@@ -45,14 +45,14 @@ public class Deaf : AiController
                 {
                     ChangeState(AIState.Attack);
                 }
-                if (HealthComponent.currentHealth <= fleeHealthPercentage)
+                if (healthComponent.currentHealth <= fleeHealthPercentage)
                 {
                     ChangeState(AIState.Flee);
                 }
                 break;
             case AIState.Flee:
                 DoFleeState();
-                if (HealthComponent.currentHealth > fleeHealthPercentage && CanSeeEnemy())
+                if (healthComponent.currentHealth > fleeHealthPercentage && CanSeeEnemy())
                 {
                     ChangeState(AIState.Chase);
                 }
@@ -74,7 +74,7 @@ public class Deaf : AiController
                 {
                     ChangeState(AIState.Chase);
                 }
-                if (HealthComponent.currentHealth <= fleeHealthPercentage)
+                if (healthComponent.currentHealth <= fleeHealthPercentage)
                 {
                     ChangeState(AIState.Flee);
                 }

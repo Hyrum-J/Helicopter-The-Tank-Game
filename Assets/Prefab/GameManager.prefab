@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2056581185289437215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2056581185289437214}
+  - component: {fileID: 2056581185289437213}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2056581185289437214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056581185289437215}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2056581185289437213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056581185289437215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a33042507fdabd46a36698de1b21931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpawns:
+  - {fileID: 7478468030569095280, guid: b1e9a5719dac7ce4abcfee5ced801838, type: 3}
+  - {fileID: 6184717336237939405, guid: 2deacf19520ac5648b4b8fb4899fe8a6, type: 3}
+  - {fileID: 7107021520997652355, guid: cd11fe032efd9be4eaac7cd096dc58fd, type: 3}
+  - {fileID: 8358039936280395223, guid: 744e15b21ce299745b044801a4e7670c, type: 3}
+  - {fileID: 8595186875306168471, guid: c9cd1e0a232504a408296fea11e9db3a, type: 3}
+  - {fileID: 502426240068109010, guid: 22391ce6b1ca495429dc72e4680a5d67, type: 3}
+  - {fileID: 1072306845628491927, guid: cb761ca34a759fe439e141bd47467074, type: 3}
+  playerControllerPrefab: {fileID: 1245281894536466936, guid: cf427f71a695fb04f96eac3738d38848, type: 3}
+  playerXboxControllerPrefab: {fileID: 1245281894536466936, guid: 2f1bb79279a6e794a9f64d10bd894248, type: 3}
+  tankPawnPrefab: {fileID: 486639565775781767, guid: fb9862a4043d7af4fb82819624611443, type: 3}
+  playerTwoPrefab: {fileID: 486639565775781767, guid: f53b9abfc1f6fb24eb4298b1b6157e0c, type: 3}
+  playerThreePrefab: {fileID: 486639565775781767, guid: 0278646a52890704eba2d42d50d0c0c1, type: 3}
+  playerFourPrefab: {fileID: 486639565775781767, guid: 95185f5120fbeb24c959f1e08218c61c, type: 3}
+  DropdownMenu: {fileID: 1923003890580636755, guid: d418ea42e423dcf46b6f10b79c48f668, type: 3}
+  heliPawnPrefab: {fileID: 1512114525988105965, guid: bb82a3eb158f0a84d8168d8b1a9df7f6, type: 3}
+  MainMenuStateObject: {fileID: 7530828236277430093, guid: 549dfdf3bf408b6459e38412017349cc, type: 3}
+  OptionsScreenStateObject: {fileID: 5923928154971075569, guid: 6cf628a9269ecf740a23fa099b165daf, type: 3}
+  ControlsScreenStateObject: {fileID: 2596477941568147430, guid: 74107aadc735536489ec5ca439374a60, type: 3}
+  PauseScreenStateObject: {fileID: 320617233238062097, guid: 2adbb23753bb09649aa49eb5436a8371, type: 3}
+  MainGameStateObject: {fileID: 7742032856216963806, guid: 3fa40d7a1dfaf2a47a3a681e5047a28b, type: 3}
+  VictoryScreenStateObject: {fileID: 6907728742818079597, guid: 4d346228900c70c43861d8a073e94610, type: 3}
+  LoserScreenStateObject: {fileID: 2158887089351590782, guid: a83382bef3dcddf4ab2a444630df50f4, type: 3}
+  pauseManager: 0
+  players: []
+  onePlayerGame: 0
+  twoPlayerGame: 0
+  threePlayerGame: 0
+  fourPlayerGame: 1
+  PlayerLives: 3

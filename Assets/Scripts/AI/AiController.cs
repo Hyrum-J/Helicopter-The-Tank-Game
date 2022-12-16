@@ -11,7 +11,9 @@ public class AiController : Controller
 
     public float maxIdleTime;
 
-    public enum AIState {Patrol, Idle, Flee, Attack, Chase};
+    public HealthComponent healthComponent;
+
+    public enum AIState { Patrol, Idle, Flee, Attack, Chase };
 
     public AIState currentState;
 
@@ -26,6 +28,10 @@ public class AiController : Controller
     public float fleeDistance;
 
     public float hearingDistance;
+    public float timeSinceLastHeard;
+    public float aiMemory;
+
+    private Vector3 lastSeenPosition;
 
     public Transform[] waypoints;
     public float waypointStopDistance;
@@ -45,6 +51,10 @@ public class AiController : Controller
     public override void Update()
     {
         MakeDesicions();
+        if(target == null)
+        {
+            TargetPlayerOne();
+        }
         base.Update();
     }
 
@@ -56,37 +66,39 @@ public class AiController : Controller
         {
             case AIState.Idle:
                 DoIdleState();
-                if(IsDistanceLessThan(target, followDistance) && CanSeeEnemy())
+                if (IsDistanceLessThan(target, followDistance) && CanSeeEnemy())
                 {
                     ChangeState(AIState.Chase);
+                    lastSeenPosition = target.transform.position;
                 }
-                if(Time.time - lastStateChangeTime > maxIdleTime)
+                if (Time.time - lastStateChangeTime > maxIdleTime)
                 {
                     ChangeState(AIState.Patrol);
                 }
-                if(CanHearEnemy(target))
+                if (CanHearEnemy(target))
                 {
                     ChangeState(AIState.Chase);
-                }    
+                    lastSeenPosition = target.transform.position;
+                }
                 break;
             case AIState.Chase:
                 DoChaseState();
-                if(!IsDistanceLessThan(target, followDistance) || !CanSeeEnemy())
+                if (!IsDistanceLessThan(target, followDistance) || !CanSeeEnemy())
                 {
                     ChangeState(AIState.Idle);
                 }
-                else if(IsDistanceLessThan(target, attackDistance) && CanSeeEnemy())
+                else if (IsDistanceLessThan(target, attackDistance) && CanSeeEnemy())
                 {
                     ChangeState(AIState.Attack);
                 }
-                if (HealthComponent.currentHealth <= fleeHealthPercentage)
+                if (healthComponent.currentHealth <= fleeHealthPercentage)
                 {
                     ChangeState(AIState.Flee);
                 }
                 break;
             case AIState.Flee:
                 DoFleeState();
-                if (HealthComponent.currentHealth > fleeHealthPercentage && CanSeeEnemy())
+                if (healthComponent.currentHealth > fleeHealthPercentage && CanSeeEnemy())
                 {
                     ChangeState(AIState.Chase);
                 }
@@ -108,11 +120,12 @@ public class AiController : Controller
                 break;
             case AIState.Attack:
                 DoAttackState();
-                if (!IsDistanceLessThan(target, attackDistance) || !CanSeeEnemy())
+                if (!IsDistanceLessThan(target, attackDistance) || CanSeeEnemy())
                 {
+                    lastSeenPosition = target.transform.position;
                     ChangeState(AIState.Chase);
                 }
-                if (HealthComponent.currentHealth <= fleeHealthPercentage)
+                if (healthComponent.currentHealth <= fleeHealthPercentage)
                 {
                     ChangeState(AIState.Flee);
                 }
@@ -143,14 +156,50 @@ public class AiController : Controller
 
     public void Seek(Vector3 targetPos)
     {
-        pawn.RotateTowards(pawn.transform.position + targetPos);
-        pawn.MoveForward();
+        if (canMoveForward())
+        {
+            Debug.Log("Forward Clear Vector3");
+            pawn.RotateTowards(targetPos);
+            pawn.MoveForward();
+        }
+        else if (canMoveRight())
+        {
+            Debug.Log("Right Clear");
+            pawn.RotateTowards(pawn.transform.position + pawn.transform.right);
+        }
+        else if (canMoveLeft())
+        {
+            Debug.Log("Left Clear");
+            pawn.RotateTowards(pawn.transform.position - pawn.transform.right);
+        }
+        else
+        {
+            pawn.RotateTowards(pawn.transform.position + pawn.transform.right);
+        }
     }
     public void Seek(GameObject target)
     {
-        pawn.RotateTowards(target.transform.position);
-
-        pawn.MoveForward();
+        Debug.Log(target);
+        if (canMoveForward())
+        {
+            Debug.Log("Forward Clear");
+            pawn.RotateTowards(target.transform.position);
+            pawn.MoveForward();
+        }
+        else if (canMoveRight())
+        {
+            Debug.Log("Right Clear");
+            pawn.RotateTowards(pawn.transform.position + pawn.transform.right);
+        }
+        else if (canMoveLeft())
+        {
+            Debug.Log("Left Clear");
+            pawn.RotateTowards(pawn.transform.position - pawn.transform.right);
+        }
+        else
+        {
+            pawn.RotateTowards(pawn.transform.position + pawn.transform.right);
+        }
     }
 
     public void Seek(Transform targetTransform)
@@ -169,7 +218,7 @@ public class AiController : Controller
 
         Vector3 vectorAwayFromTarget = -vectorToTarget;
 
-        
+
         float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
         float percentOfFleeDistance = targetDistance / fleeDistance;
         percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
@@ -184,7 +233,7 @@ public class AiController : Controller
         if (waypoints.Length > currentWaypoint)
         {
             Seek(waypoints[currentWaypoint]);
-            if(Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
+            if (Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
             {
                 currentWaypoint++;
             }
@@ -202,9 +251,9 @@ public class AiController : Controller
 
     protected virtual void TargetPlayerOne()
     {
-        if(GameManager.instance != null)
+        if (GameManager.instance != null)
         {
-            if(GameManager.instance.players != null && GameManager.instance.players.Count > 0)
+            if (GameManager.instance.players != null && GameManager.instance.players.Count > 0)
             {
                 target = GameManager.instance.players[0].pawn.gameObject;
             }
@@ -241,6 +290,14 @@ public class AiController : Controller
 
     protected void DoChaseState()
     {
+        //if (CanSeeEnemy())
+        //{
+        //  lastSeenPosition = target.transform.position;
+        //}
+        //else if (CanRemeberTarget(aiMemory, timeSinceLastHeard))
+        //{
+        //  Seek(lastSeenPosition);
+        //}
         Seek(target);
     }
 
@@ -251,6 +308,8 @@ public class AiController : Controller
 
     protected virtual void DoAttackState()
     {
+        lastSeenPosition = target.transform.position;
+
         Seek(target);
 
         pawn.shoot();
@@ -284,58 +343,137 @@ public class AiController : Controller
         {
             return false;
         }
-        
+
         float totalDistance = noiseMaker.currentVolumeDistance + hearingDistance;
         if (Vector3.Distance(pawn.transform.position, target.transform.position) <= totalDistance)
         {
+            timeSinceLastHeard = Time.time;
             return true;
         }
         else
         {
-             Debug.Log("Volume:" + totalDistance);
-             return false;
+            Debug.Log("Volume:" + totalDistance);
+            return false;
         }
-       
+
     }
 
     protected bool CanSeeEnemy()
     {
-        if(Vector3.Distance(pawn.transform.position, target.transform.position) < viewDistance)
-        {
-            Vector3 AgentToTargetVector = target.transform.position - transform.position;
+        Vector3 AgentToTargetVector = target.transform.position - transform.position;
+        Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
+        float angleToTarget = Vector3.Angle(AgentToTargetVector, pawn.transform.forward);
 
-            float angleToTarget = Vector3.Angle(AgentToTargetVector, pawn.transform.forward);
+        if (Vector3.Distance(pawn.transform.position, target.transform.position) < viewDistance)
+        {
 
             if (angleToTarget < fov)
             {
-                //Ray ray = new Ray(transform.position, target.transform.position);
-                //RaycastHit2D hit = Physics2D.Raycast(transform.position, target.transform.position);
-                //GameObject hitGameObject = hit.transform.gameObject;
-                //if (hitGameObject == target)
-                //{
-                    return true;
-                //}
-                //else
-                //{
-                  //  Debug.Log(Physics.Raycast(pawn.transform.position, target.transform.position));
-                    //return false;
-                //}
+                RaycastHit hit;
 
+                if (Physics.Raycast(HeightOffsetPosition, AgentToTargetVector.normalized, out hit, Vector3.Distance(pawn.transform.position, target.transform.position)))
+                {
+                    if (hit.transform.gameObject == target)
+                    {
+                        Debug.DrawRay(HeightOffsetPosition, AgentToTargetVector.normalized * viewDistance, Color.green, 20);
+                        Debug.Log("Raycast hit " + hit.transform.name);
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.DrawRay(HeightOffsetPosition, AgentToTargetVector.normalized * viewDistance, Color.blue, 20);
+                        Debug.Log("Raycast hit but also didn't hit.  Object: " + hit.transform.name);
+                        return false;
+                    }
+                }
+                else
+                {
+                    Debug.DrawRay(HeightOffsetPosition, AgentToTargetVector.normalized * viewDistance, Color.red, 20);
+                    Debug.LogError("Raycast didn't hit anything.");
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
-                
-        }   
+
+        }
         else
         {
             return false;
-        }    
+        }
+    }
+
+    protected bool canMoveForward()
+    {
+        Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
+        RaycastHit hit;
+        Debug.DrawRay(HeightOffsetPosition, transform.forward.normalized * 10, Color.blue, 20);
+        Physics.Raycast(HeightOffsetPosition, transform.forward.normalized, out hit, 10);
+        Debug.Log(hit.collider);
+        if (CanSeeEnemy())
+        {
+            return true;
+        }
+        else if (hit.collider == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected bool canMoveRight()
+    {
+        Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
+        RaycastHit hit;
+        Debug.DrawRay(HeightOffsetPosition, transform.right.normalized * 10, Color.blue, 20);
+        Physics.Raycast(HeightOffsetPosition, transform.right.normalized, out hit, 10);
+        Debug.Log(hit.collider);
+        if (hit.collider == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected bool canMoveLeft()
+    {
+        Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
+        RaycastHit hit;
+        Debug.DrawRay(HeightOffsetPosition,Vector3.left.normalized* 10, Color.blue, 20);
+        Physics.Raycast(HeightOffsetPosition, Vector3.left.normalized, out hit, 10);
+        Debug.Log(hit.collider);
+        if(hit.collider == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     protected bool IsHasTarget()
     {
         return target != null;
+    }
+
+    protected bool CanRemeberTarget(float memoryTime, float timeSinceLastInteraction)
+    {
+        if(Time.time - memoryTime <= timeSinceLastInteraction)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

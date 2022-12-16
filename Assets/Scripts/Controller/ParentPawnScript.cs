@@ -51,7 +51,7 @@ public abstract class Pawn : MonoBehaviour
     public bool isHovering;
 
     //Max health of the pawn
-    public float maxHealth;
+    protected float maxHealth;
 
     //The current health of the pawn
     protected float currentHealth;
@@ -79,6 +79,8 @@ public abstract class Pawn : MonoBehaviour
     //How long the bullet stays rendered
     public float shellLifespan;
 
+    public HealthComponent healthComponenet;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -97,7 +99,8 @@ public abstract class Pawn : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-
+        maxHealth = healthComponenet.maxHealth;
+        currentHealth = healthComponenet.currentHealth;
     }
 
     public abstract void MoveForward();

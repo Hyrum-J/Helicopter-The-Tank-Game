@@ -41,7 +41,7 @@ public class Sniper : AiController
                 break;
             case AIState.Flee:
                 DoFleeState();
-                if (HealthComponent.currentHealth > fleeHealthPercentage && CanSeeEnemy())
+                if (healthComponent.currentHealth > fleeHealthPercentage && CanSeeEnemy())
                 {
                     ChangeState(AIState.Attack);
                 }
@@ -71,7 +71,7 @@ public class Sniper : AiController
                 {
                     ChangeState(AIState.Flee);
                 }
-                if (HealthComponent.currentHealth <= fleeHealthPercentage)
+                if (healthComponent.currentHealth <= fleeHealthPercentage)
                 {
                     ChangeState(AIState.Flee);
                 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class PlayerController : Controller
 {
@@ -15,7 +16,9 @@ public class PlayerController : Controller
     public KeyCode rollRightKey;
     public KeyCode hoverKey;
     public KeyCode shootKey;
+    public KeyCode PauseButton;
 
+    public GameManager gameManager = GameManager.instance;
      
     // Start is called before the first frame update
     public override void Start()
@@ -108,6 +111,11 @@ public class PlayerController : Controller
         if(Input.GetKey(shootKey))
         {
             pawn.shoot();
+        }
+
+        if(Input.GetKeyDown(PauseButton))
+        {
+            gameManager.ActivatePauseScreen();
         }
 
     }

@@ -67,7 +67,7 @@ public class Wimp : AiController
                 {
                     ChangeState(AIState.Flee);
                 }
-                if (HealthComponent.currentHealth <= fleeHealthPercentage)
+                if (healthComponent.currentHealth <= fleeHealthPercentage)
                 {
                     ChangeState(AIState.Flee);
                 }
