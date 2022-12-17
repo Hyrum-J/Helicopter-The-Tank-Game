@@ -6,10 +6,12 @@ using UnityEngine;
 public class StartButton : MonoBehaviour
 {
     public GameManager gameManager;
+    public AudioSource buttonClick;
     public void GameStarter()
     {
         if(gameManager != null)
         {
+            buttonClick.Play();
             gameManager.ActivateMainGameScreen();
         }
     }

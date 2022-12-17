@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2070545785917735646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3794099974192635078}
+  - component: {fileID: 7539517559034124670}
+  m_Layer: 0
+  m_Name: DeafController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3794099974192635078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070545785917735646}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7539517559034124670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070545785917735646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f277d2ac6e4447a4e94898e8b536767f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pawn: {fileID: 0}
+  maxIdleTime: 5
+  healthComponent: {fileID: 0}
+  currentState: 0
+  target: {fileID: 0}
+  fleeHealthPercentage: 50
+  followDistance: 30
+  attackDistance: 5
+  fleeDistance: 30
+  hearingDistance: 5
+  timeSinceLastHeard: 0
+  aiMemory: 0
+  waypoints:
+  - {fileID: 421816, guid: 37357797f6c4ad04683fe4c62dca7d5c, type: 3}
+  - {fileID: 421816, guid: 39f310e03ac8509449b9f46fcf3a5290, type: 3}
+  - {fileID: 421816, guid: 74baf441e51ff054db3730e1f9cabaff, type: 3}
+  - {fileID: 421816, guid: f805813a595f83d48845a0e795129cc2, type: 3}
+  - {fileID: 421816, guid: 812d310fbc9ff114e80a338f5ccccbea, type: 3}
+  - {fileID: 421816, guid: 47f581a8e4a0ad4448221f102386e247, type: 3}
+  - {fileID: 421816, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+  waypointStopDistance: 1
+  fov: 60
+  viewDistance: 20

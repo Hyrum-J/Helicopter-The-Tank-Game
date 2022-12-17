@@ -5,6 +5,7 @@ using UnityEngine;
 public class PowerUpManager : MonoBehaviour
 {
 
+    public AudioSource powerUpSound;
     public List<PowerUp> powerUps;
     public List<PowerUp> removedPowerUpQueue;
 
@@ -32,6 +33,8 @@ public class PowerUpManager : MonoBehaviour
 
     public void Add(PowerUp powerUpToAdd)
     {
+        powerUpSound.Play();
+
         powerUpToAdd.Apply(this);
 
         powerUps.Add(powerUpToAdd);

@@ -255,7 +255,7 @@ public class AiController : Controller
         {
             if (GameManager.instance.players != null && GameManager.instance.players.Count > 0)
             {
-                target = GameManager.instance.players[0].pawn.gameObject;
+                target = GameManager.instance.players[GameManager.instance.players.Count - 1].pawn.gameObject;
             }
         }
     }

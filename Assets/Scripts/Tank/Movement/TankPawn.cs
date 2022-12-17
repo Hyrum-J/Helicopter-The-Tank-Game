@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TankPawn : Pawn
 {
+    public AudioSource shot;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -71,6 +73,7 @@ public class TankPawn : Pawn
     {
         if (canShoot == true)
         {
+            shot.Play();
             shooter.Shoot(shellPrefab, fireForce, damageDone, shellLifespan);
             timeOfLastShot = Time.time;
             canShoot = false;

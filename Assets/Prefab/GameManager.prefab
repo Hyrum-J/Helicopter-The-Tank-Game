@@ -45,19 +45,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawns:
-  - {fileID: 7478468030569095280, guid: b1e9a5719dac7ce4abcfee5ced801838, type: 3}
-  - {fileID: 6184717336237939405, guid: 2deacf19520ac5648b4b8fb4899fe8a6, type: 3}
-  - {fileID: 7107021520997652355, guid: cd11fe032efd9be4eaac7cd096dc58fd, type: 3}
-  - {fileID: 8358039936280395223, guid: 744e15b21ce299745b044801a4e7670c, type: 3}
-  - {fileID: 8595186875306168471, guid: c9cd1e0a232504a408296fea11e9db3a, type: 3}
-  - {fileID: 502426240068109010, guid: 22391ce6b1ca495429dc72e4680a5d67, type: 3}
-  - {fileID: 1072306845628491927, guid: cb761ca34a759fe439e141bd47467074, type: 3}
-  playerControllerPrefab: {fileID: 1245281894536466936, guid: cf427f71a695fb04f96eac3738d38848, type: 3}
-  playerXboxControllerPrefab: {fileID: 1245281894536466936, guid: 2f1bb79279a6e794a9f64d10bd894248, type: 3}
+  - {fileID: 6146302776025207575, guid: 4efe545459dde974abf696eb0e1421e7, type: 3}
+  - {fileID: 4272582365308874773, guid: 15e6cf6029bfcb540b9604001393354c, type: 3}
+  - {fileID: 3938792888401762573, guid: 9bfd263352be2b345a167a620b286282, type: 3}
+  - {fileID: 5227099711172248127, guid: 8eb7b5836e3f5cc459d0a1326de40b03, type: 3}
+  - {fileID: 7080398549214219389, guid: 36b586c2230d646429b47bd82acb8c61, type: 3}
+  - {fileID: 3450761378777185201, guid: 17547d71c9e8bf746a6add039a193412, type: 3}
+  - {fileID: 1685241066488898633, guid: 988e921ebe5d45d4bb10c81d41dabb66, type: 3}
+  playerControllerPrefab: {fileID: 1245281894536466936, guid: d6730b2f71b2aeb4b9c7aad0aa196449, type: 3}
+  player2ControllerPrefab: {fileID: 1245281894536466936, guid: 2f1bb79279a6e794a9f64d10bd894248, type: 3}
+  player3Controller: {fileID: 1245281894536466936, guid: cf427f71a695fb04f96eac3738d38848, type: 3}
+  player4Controller: {fileID: 1245281894536466936, guid: 42c3d66ad4a7dc2469ed39830c601eb7, type: 3}
   tankPawnPrefab: {fileID: 486639565775781767, guid: fb9862a4043d7af4fb82819624611443, type: 3}
   playerTwoPrefab: {fileID: 486639565775781767, guid: f53b9abfc1f6fb24eb4298b1b6157e0c, type: 3}
   playerThreePrefab: {fileID: 486639565775781767, guid: 0278646a52890704eba2d42d50d0c0c1, type: 3}
   playerFourPrefab: {fileID: 486639565775781767, guid: 95185f5120fbeb24c959f1e08218c61c, type: 3}
+  aiController: {fileID: 2070545785917735646, guid: 285f23d73348ca34cacf570adf5e8c7c, type: 3}
+  aiController2: {fileID: 3336417994427930528, guid: ff1953a58a8822b4db58c333499231aa, type: 3}
+  aiTank1: {fileID: 8151881917456498424, guid: 7cc7fdb7a2935774dae925ee81b87c31, type: 3}
+  aiTank2: {fileID: 8151881917456498424, guid: c785e0dca82674144b4d396caf84d540, type: 3}
+  aiTank3: {fileID: 8374170599475759838, guid: cd779db3a2d93e54180b63bdc7c2f72d, type: 3}
   DropdownMenu: {fileID: 1923003890580636755, guid: d418ea42e423dcf46b6f10b79c48f668, type: 3}
   heliPawnPrefab: {fileID: 1512114525988105965, guid: bb82a3eb158f0a84d8168d8b1a9df7f6, type: 3}
   MainMenuStateObject: {fileID: 7530828236277430093, guid: 549dfdf3bf408b6459e38412017349cc, type: 3}
@@ -69,6 +76,10 @@ MonoBehaviour:
   LoserScreenStateObject: {fileID: 2158887089351590782, guid: a83382bef3dcddf4ab2a444630df50f4, type: 3}
   pauseManager: 0
   players: []
+  playerOneScore: 0
+  playerTwoScore: 0
+  playerThreeScore: 0
+  playerFourSocre: 0
   onePlayerGame: 0
   twoPlayerGame: 0
   threePlayerGame: 0
