@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TankShooter : Shooter
 {
-
+    //Where it shoots from
     public Transform firepointTransform;
 
     // Start is called before the first frame update
@@ -19,6 +19,7 @@ public class TankShooter : Shooter
         
     }
 
+    //Shoots a bullet that destroys itself after X amount of seconds
     public override void Shoot(GameObject shellPrefab, float fireForce, float damageDone, float lifespan)
     {
 

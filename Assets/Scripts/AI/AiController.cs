@@ -7,38 +7,44 @@ using UnityEngine.EventSystems;
 public class AiController : Controller
 {
 
+    #region Variables
     protected float lastStateChangeTime;
 
     public float maxIdleTime;
 
     public HealthComponent healthComponent;
 
+    //AI States
     public enum AIState { Patrol, Idle, Flee, Attack, Chase };
-
     public AIState currentState;
 
+    //Target of the AI
     public GameObject target;
 
+    //Values for the AI
     public float fleeHealthPercentage;
-
     public float followDistance;
-
     public float attackDistance;
-
     public float fleeDistance;
 
+    //Hearing
     public float hearingDistance;
     public float timeSinceLastHeard;
     public float aiMemory;
 
+    //Sight
     private Vector3 lastSeenPosition;
 
+    //Waypoints
     public Transform[] waypoints;
     public float waypointStopDistance;
     private int currentWaypoint = 0;
 
+    //Sight pt 2
     public float fov;
     public float viewDistance;
+#endregion
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -58,6 +64,10 @@ public class AiController : Controller
         base.Update();
     }
 
+    //How the FSM actually works
+    #region AI state changing
+
+    //Makes the desicions for the AI
     public virtual void MakeDesicions()
     {
         TargetNearestTank();
@@ -136,24 +146,24 @@ public class AiController : Controller
         }
     }
 
+    //NULL
     public override void ProcessInputs()
     {
 
 
     }
 
+    //Changes the state of the AI
     public virtual void ChangeState(AIState newState)
     {
         currentState = newState;
 
         lastStateChangeTime = Time.time;
     }
+    #endregion
 
-    public void DoSeekState()
-    {
-        Seek(target);
-    }
-
+    //Oerloading Seeks. 
+    #region Seek
     public void Seek(Vector3 targetPos)
     {
         if (canMoveForward())
@@ -211,44 +221,12 @@ public class AiController : Controller
     {
         Seek(targetPawn.gameObject);
     }
+    #endregion
 
-    protected void Flee()
-    {
-        Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
+    //Targeting the target which is the target
+    #region Targeting
 
-        Vector3 vectorAwayFromTarget = -vectorToTarget;
-
-
-        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
-        float percentOfFleeDistance = targetDistance / fleeDistance;
-        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
-        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance;
-
-        Vector3 fleeVector = vectorAwayFromTarget.normalized * flippedPercentOfFleeDistance;
-        Seek(fleeVector);
-    }
-
-    protected virtual void Patrol()
-    {
-        if (waypoints.Length > currentWaypoint)
-        {
-            Seek(waypoints[currentWaypoint]);
-            if (Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
-            {
-                currentWaypoint++;
-            }
-        }
-        else
-        {
-            RestartPatrol();
-        }
-    }
-
-    protected void RestartPatrol()
-    {
-        currentWaypoint = 0;
-    }
-
+    //Targets last player in list
     protected virtual void TargetPlayerOne()
     {
         if (GameManager.instance != null)
@@ -260,6 +238,7 @@ public class AiController : Controller
         }
     }
 
+    //Targets the nearest tank
     protected virtual void TargetNearestTank()
     {
         Pawn closestTank;
@@ -288,6 +267,76 @@ public class AiController : Controller
         }
     }
 
+    //Checks distance
+    protected virtual bool IsDistanceLessThan(GameObject target, float distance)
+    {
+        if (Vector3.Distance(pawn.transform.position, target.transform.position) < distance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //Makes sure the it has a target
+    protected bool IsHasTarget()
+    {
+        return target != null;
+    }
+    #endregion
+
+    //What the states actually do
+    #region AI States
+
+    //Seeks the target
+    public void DoSeekState()
+    {
+        Seek(target);
+    }
+
+    //Flees when damaged badly
+    protected void Flee()
+    {
+        Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
+
+        Vector3 vectorAwayFromTarget = -vectorToTarget;
+
+
+        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
+        float percentOfFleeDistance = targetDistance / fleeDistance;
+        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
+        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance;
+
+        Vector3 fleeVector = vectorAwayFromTarget.normalized * flippedPercentOfFleeDistance;
+        Seek(fleeVector);
+    }
+
+    //Patrols the arena
+    protected virtual void Patrol()
+    {
+        if (waypoints.Length > currentWaypoint)
+        {
+            Seek(waypoints[currentWaypoint]);
+            if (Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
+            {
+                currentWaypoint++;
+            }
+        }
+        else
+        {
+            RestartPatrol();
+        }
+    }
+
+    //Sets waypoints to 0;
+    protected void RestartPatrol()
+    {
+        currentWaypoint = 0;
+    }
+
+    //Chase the enemy
     protected void DoChaseState()
     {
         //if (CanSeeEnemy())
@@ -301,11 +350,13 @@ public class AiController : Controller
         Seek(target);
     }
 
+    //Does nothing
     protected void DoIdleState()
     {
 
     }
 
+    //Attacks the target
     protected virtual void DoAttackState()
     {
         lastSeenPosition = target.transform.position;
@@ -315,23 +366,16 @@ public class AiController : Controller
         pawn.shoot();
     }
 
+    //Runs away
     protected virtual void DoFleeState()
     {
         Flee();
     }
+    #endregion
 
-    protected virtual bool IsDistanceLessThan(GameObject target, float distance)
-    {
-        if (Vector3.Distance(pawn.transform.position, target.transform.position) < distance)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
+    //How the AI sees and Hears the world
+    #region AI Senses
+    //Enemy Hearing
     protected bool CanHearEnemy(GameObject target)
     {
         TotallyNotWhatItIs noiseMaker = target.GetComponent<TotallyNotWhatItIs>();
@@ -358,6 +402,7 @@ public class AiController : Controller
 
     }
 
+    //AI Sight
     protected bool CanSeeEnemy()
     {
         Vector3 AgentToTargetVector = target.transform.position - transform.position;
@@ -405,6 +450,23 @@ public class AiController : Controller
         }
     }
 
+    //Memory function
+    protected bool CanRemeberTarget(float memoryTime, float timeSinceLastInteraction)
+    {
+        if (Time.time - memoryTime <= timeSinceLastInteraction)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    #endregion
+
+    //How the AI makes it's way around
+    #region Pathfinding
+    //Pathfinding: Forward clear
     protected bool canMoveForward()
     {
         Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
@@ -426,6 +488,7 @@ public class AiController : Controller
         }
     }
 
+    //Pathfinding: Right clear
     protected bool canMoveRight()
     {
         Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
@@ -443,6 +506,7 @@ public class AiController : Controller
         }
     }
 
+    //Pathfinding: Left Clear
     protected bool canMoveLeft()
     {
         Vector3 HeightOffsetPosition = new Vector3(transform.position.x, transform.position.y + transform.localScale.y / 2, transform.position.z);
@@ -459,21 +523,6 @@ public class AiController : Controller
             return false;
         }
     }
+    #endregion
 
-    protected bool IsHasTarget()
-    {
-        return target != null;
-    }
-
-    protected bool CanRemeberTarget(float memoryTime, float timeSinceLastInteraction)
-    {
-        if(Time.time - memoryTime <= timeSinceLastInteraction)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 }

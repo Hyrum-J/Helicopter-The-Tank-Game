@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ArmorPickup : Pickup
 {
+    //Connects to the powerup
     public ArmorPowerup powerUp;
 
     // Update is called once per frame
@@ -12,6 +13,7 @@ public class ArmorPickup : Pickup
         base.Update();
     }
 
+    //Destroys actual pickup
     public void OnTriggerEnter(Collider other)
     {
         PowerUpManager PowerUpManager = other.GetComponent<PowerUpManager>();

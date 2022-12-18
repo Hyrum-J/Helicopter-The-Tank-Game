@@ -18,6 +18,7 @@ public class Deaf : AiController
         base.Update();
     }
 
+    //Deaf can't hear bullets
     public override void MakeDesicions()
     {
         TargetNearestTank();

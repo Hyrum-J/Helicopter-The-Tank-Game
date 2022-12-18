@@ -18,6 +18,7 @@ public class Sniper : AiController
         base.Update();
     }
 
+    //Sniper stays back and fires from afar. Does not like to get close.
     public override void MakeDesicions()
     {
         TargetNearestTank();

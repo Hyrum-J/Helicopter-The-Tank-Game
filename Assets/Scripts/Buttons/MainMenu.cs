@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
+    //Game manager and sound when clicking
     public GameManager gameManager;
     public AudioSource buttonClick;
     public void BackToMenu()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class HealthPickup : Pickup
 {
 
+    //Powerup
     public HealthPowerUp powerUp;
 
     // Update is called once per frame
@@ -13,6 +14,7 @@ public class HealthPickup : Pickup
         base.Update();
     }
 
+    //Adds powerups effects to the manager
     public void OnTriggerEnter(Collider other)
     {
         PowerUpManager PowerUpManager = other.GetComponent<PowerUpManager>();

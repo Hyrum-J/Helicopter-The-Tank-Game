@@ -1,53 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static Unity.VisualScripting.Member;
 
 public class HealthComponent : MonoBehaviour
 {
     #region Variables
+
+    //Health and Regeneration Variables
     public float maxHealth;
     public float currentHealth;
     public float healthPercentage;
+    public float regeneration;
+    public float timeBeforeHealing;
+    private float timeOfLastDamage;
 
+    //Gets the gamemanager
     public GameManager gameManager;
 
-    public Image healthBar;
-    public Image Life1;
-    public Image Life2;
-    public Image Life3;
+    //Private character healthbar
+    public UnityEngine.UI.Image healthBar;
 
+    //Public health bar for everyone to see
+    public UnityEngine.UI.Image UniversalHealthBar;
+
+    //Score trackers
     public TextMeshProUGUI player1Score;
     public TextMeshProUGUI player2Score;
     public TextMeshProUGUI player3Score;
     public TextMeshProUGUI player4Score;
 
+    //Sounds for getting hit and dying
     public AudioSource hit;
     public AudioSource death;
 
+    //Timer Variables
+    private float timeLeft;
+    private float clockMinute;
+    private float clockSeconds;
+    private string clockSecondsString;
+    private float matchLengthAdjusted;
+    private float timeStartAdjusted;
+    public TextMeshProUGUI timer;
+
+    //Keeps track of who's who
     public int pawnNum;
+
+    public Pawn KillboxPawn;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        //Sets game manager, gets timer ready, and sets current health. Also set's up score counters and health bars
         gameManager = GameManager.instance;
+        matchLengthAdjusted = gameManager.matchLengthinMinutes * 60;
+        Debug.Log(matchLengthAdjusted);
         currentHealth = maxHealth;
         healthPercentage = currentHealth / maxHealth;
-        healthBar.fillAmount = healthPercentage;
-        player1Score.text = "Player 1: " + gameManager.playerOneScore;
-        player2Score.text = "Player 2: " + gameManager.playerTwoScore;
-        player3Score.text = "Player 3: " + gameManager.playerThreeScore;
-        player4Score.text = "Player 4: " + gameManager.playerFourSocre;
-    }
-
-    private void Update()
-    {
+        UniversalHealthBar.fillAmount = healthPercentage;
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = healthPercentage;
+        }
         if (player1Score != null)
         {
             player1Score.text = "Player 1: " + gameManager.playerOneScore;
@@ -57,13 +79,95 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
+    //Called once per frame
+    private void Update()
+    {
+        //Updates scores to keep them accurate
+        if (player1Score != null)
+        {
+            player1Score.text = "Player 1: " + gameManager.playerOneScore;
+            player2Score.text = "Player 2: " + gameManager.playerTwoScore;
+            player3Score.text = "Player 3: " + gameManager.playerThreeScore;
+            player4Score.text = "Player 4: " + gameManager.playerFourSocre;
+        }
+        //Updates timer on screen
+        if (timer != null)
+        {
+            if (gameManager.timerStarted)
+            {
+                if (timeStartAdjusted <= 0)
+                {
+                    timeStartAdjusted = matchLengthAdjusted + gameManager.timerStartTime;
+                    timeLeft = timeStartAdjusted;
+                }
+                else
+                {
+                    timeLeft -= Time.deltaTime;
+                }
+                timerToClock(timeLeft);
+                timer.text = clockMinute.ToString() + ":" + clockSecondsString;
+                if (timeLeft <= gameManager.timerStartTime)
+                {
+                    timeStartAdjusted = 0;
+                    gameManager.ActivateLoserScreen();
+                }
+            }
+        }
+        //Regeneration
+        if(currentHealth != maxHealth)
+        {
+            if(timeBeforeHealing + timeOfLastDamage < Time.time)
+            {
+                Heal(regeneration);
+            }
+        }
+    }
+
+    //Turns timer into a readable clock
+    public void timerToClock(float timer)
+    {
+        float tempSeconds;
+        float adjustedTimer = timer - gameManager.timerStartTime;
+        clockMinute = Mathf.Floor(adjustedTimer / 60);
+        tempSeconds = adjustedTimer / 60 - clockMinute;
+        clockSeconds = Mathf.Floor(tempSeconds * 60);
+        if(clockSeconds < 10)
+        {
+            clockSecondsString = "0" + clockSeconds.ToString();
+        }
+        else
+        {
+            clockSecondsString = clockSeconds.ToString();
+        }
+    }
+
+    //Heals character
+    public void Heal(float amount)
+    {
+        currentHealth = currentHealth + amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthPercentage = currentHealth / maxHealth;
+        UniversalHealthBar.fillAmount = healthPercentage;
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = healthPercentage;
+        }
+
+    }
+
+    //Functions that happen during or after death
+    #region death
+
+    //Applies damage to character
     public void TakeDamage(float amount, Pawn source)
     {
         hit.Play();
+        timeOfLastDamage = Time.time;
         currentHealth = currentHealth - amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthPercentage = currentHealth / maxHealth;
-        if(healthBar != null)
+        UniversalHealthBar.fillAmount = healthPercentage;
+        if (healthBar != null)
         {
             healthBar.fillAmount = healthPercentage;
         }
@@ -72,28 +176,15 @@ public class HealthComponent : MonoBehaviour
         {
             death.Play();
             AddPoints(source);
-            gameManager.PlayerLives--;
-            if (gameManager.PlayerLives > 0)
+            if (source != KillboxPawn)
             {
                 Respawn();
-                Die(source);
             }
-            else
-            {
-                gameManager.ActivateLoserScreen();
-            }
+            Die(source);
         }
     }
 
-    public void Heal(float amount)
-    {
-        currentHealth = currentHealth + amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        healthPercentage = currentHealth / maxHealth;
-        healthBar.fillAmount = healthPercentage;
-
-    }
-
+    //Adds points to whoever kills you
     public void AddPoints(Pawn source)
     {
         if (source.healthComponenet.pawnNum == 1)
@@ -126,6 +217,7 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
+    //Calls respawn functions from game manager
     public void Respawn()
     {
         if (pawnNum == 1)
@@ -136,19 +228,7 @@ public class HealthComponent : MonoBehaviour
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
             healthBar.fillAmount = healthPercentage;
-            if (gameManager.PlayerLives == 2)
-            {
-                Life3.fillAmount = 0f;
-            }
-            else if (gameManager.PlayerLives == 1)
-            {
-                Life2.fillAmount = 0f;
-            }
-            else
-            {
-                Life1.fillAmount = 0f;
-
-            }
+            UniversalHealthBar.fillAmount = healthPercentage;
 
         }
         else if (pawnNum == 2)
@@ -159,19 +239,7 @@ public class HealthComponent : MonoBehaviour
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
             healthBar.fillAmount = healthPercentage;
-            if (gameManager.PlayerLives == 2)
-            {
-                Life3.fillAmount = 0;
-            }
-            else if (gameManager.PlayerLives == 1)
-            {
-                Life2.fillAmount = 0;
-            }
-            else
-            {
-                Life1.fillAmount = 0;
-                gameManager.ActivateLoserScreen();
-            }
+            UniversalHealthBar.fillAmount = healthPercentage;
 
         }
         else if (pawnNum == 3)
@@ -182,19 +250,7 @@ public class HealthComponent : MonoBehaviour
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
             healthBar.fillAmount = healthPercentage;
-            if (gameManager.PlayerLives == 2)
-            {
-                Life3.fillAmount = 0;
-            }
-            else if (gameManager.PlayerLives == 1)
-            {
-                Life2.fillAmount = 0;
-            }
-            else
-            {
-                Life1.fillAmount = 0;
-            }
-
+            UniversalHealthBar.fillAmount = healthPercentage;
         }
         else if (pawnNum == 4)
         {
@@ -204,18 +260,7 @@ public class HealthComponent : MonoBehaviour
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
             healthBar.fillAmount = healthPercentage;
-            if (gameManager.PlayerLives == 2)
-            {
-                Life3.fillAmount = 0;
-            }
-            else if (gameManager.PlayerLives == 1)
-            {
-                Life2.fillAmount = 0;
-            }
-            else
-            {
-                Life1.fillAmount = 0;
-            }
+            UniversalHealthBar.fillAmount = healthPercentage;
 
         }
         else if (pawnNum == 5)
@@ -224,7 +269,8 @@ public class HealthComponent : MonoBehaviour
             gameManager.RespawnAIOne(gameManager.aiTank1);
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
-            
+            UniversalHealthBar.fillAmount = healthPercentage;
+
         }
         else if (pawnNum == 6)
         {
@@ -232,6 +278,7 @@ public class HealthComponent : MonoBehaviour
             gameManager.RespawnAITwo(gameManager.aiTank2);
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
+            UniversalHealthBar.fillAmount = healthPercentage;
         }
         else if (pawnNum == 7)
         {
@@ -239,13 +286,16 @@ public class HealthComponent : MonoBehaviour
             gameManager.RespawnAIThree(gameManager.aiTank3);
             currentHealth = maxHealth;
             healthPercentage = currentHealth / maxHealth;
+            UniversalHealthBar.fillAmount = healthPercentage;
         }
     }
 
+    //Destroys game object after dying
     public void Die(Pawn source)
     {
+        Debug.Log("Destroyed Player" + source);
         Destroy(gameObject);
-        Debug.Log("Destroyed Player");
     }
 
+    #endregion
 }

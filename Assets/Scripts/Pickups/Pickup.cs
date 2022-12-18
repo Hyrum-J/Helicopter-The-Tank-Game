@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class Pickup : MonoBehaviour
 {
+    //how fast it moves
     public float rotationSpeed;
     public float bobSpeed;
     public AnimationCurve bobCurve;
@@ -22,11 +23,13 @@ public class Pickup : MonoBehaviour
         Bob();
     }
 
+    //Rotates pickup
     protected virtual void Rotate()
     {
         transform.Rotate(0, rotationSpeed + Time.deltaTime, 0);
     }
 
+    //Moves pickup up and down
     protected virtual void Bob()
     {
         transform.position = new Vector3(transform.position.x, (bobSpeed * bobCurve.Evaluate(Time.time % bobCurve.length)), transform.position.z);

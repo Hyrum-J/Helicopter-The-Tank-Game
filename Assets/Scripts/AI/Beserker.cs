@@ -16,6 +16,7 @@ public class Beserker : AiController
         base.Update();
     }
 
+    //Takes out flee for the beserker
     public override void MakeDesicions()
     {
         TargetPlayerOne();

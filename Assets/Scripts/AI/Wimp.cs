@@ -18,6 +18,7 @@ public class Wimp : AiController
         base.Update();
     }
 
+    //Wimp stays away from you
     public override void MakeDesicions()
     {
         TargetNearestTank();
@@ -78,6 +79,7 @@ public class Wimp : AiController
         }
     }
 
+    //Even attacking he avoids you
     protected override void DoAttackState()
     {
         pawn.RotateTowards(target.transform.position);

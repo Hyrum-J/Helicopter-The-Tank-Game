@@ -103,6 +103,7 @@ public abstract class Pawn : MonoBehaviour
         currentHealth = healthComponenet.currentHealth;
     }
 
+    //Movement Functions
     public abstract void MoveForward();
     public abstract void MoveBackward();
     public abstract void RotateClockwise();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MisslePickup : Pickup
 {
+    //Connects to the powerup
     public MisslePowerup powerUp;
 
     // Update is called once per frame
@@ -12,6 +13,7 @@ public class MisslePickup : Pickup
         base.Update();
     }
 
+    //Destroys pickup
     public void OnTriggerEnter(Collider other)
     {
         PowerUpManager PowerUpManager = other.GetComponent<PowerUpManager>();

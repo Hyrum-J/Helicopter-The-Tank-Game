@@ -6,7 +6,10 @@ using UnityEngine.Analytics;
 
 public class ExitButton : MonoBehaviour
 {
+    //Sound for button click
     public AudioSource buttonClick;
+
+    //Exit game
     public void ExitGame()
     {
         buttonClick.Play();

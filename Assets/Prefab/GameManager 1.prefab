@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5487980478565646750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5487980478565646751}
+  - component: {fileID: 5487980478565646748}
+  m_Layer: 0
+  m_Name: GameManager 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5487980478565646751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487980478565646750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5487980478565646748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487980478565646750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a33042507fdabd46a36698de1b21931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpawns:
+  - {fileID: 6146302776025207575, guid: 4efe545459dde974abf696eb0e1421e7, type: 3}
+  - {fileID: 4272582365308874773, guid: 15e6cf6029bfcb540b9604001393354c, type: 3}
+  - {fileID: 3938792888401762573, guid: 9bfd263352be2b345a167a620b286282, type: 3}
+  - {fileID: 5227099711172248127, guid: 8eb7b5836e3f5cc459d0a1326de40b03, type: 3}
+  - {fileID: 7080398549214219389, guid: 36b586c2230d646429b47bd82acb8c61, type: 3}
+  - {fileID: 3450761378777185201, guid: 17547d71c9e8bf746a6add039a193412, type: 3}
+  - {fileID: 1685241066488898633, guid: 988e921ebe5d45d4bb10c81d41dabb66, type: 3}
+  playerControllerPrefab: {fileID: 1245281894536466936, guid: d6730b2f71b2aeb4b9c7aad0aa196449, type: 3}
+  player2ControllerPrefab: {fileID: 1245281894536466936, guid: 2f1bb79279a6e794a9f64d10bd894248, type: 3}
+  player3Controller: {fileID: 1245281894536466936, guid: cf427f71a695fb04f96eac3738d38848, type: 3}
+  player4Controller: {fileID: 1245281894536466936, guid: 42c3d66ad4a7dc2469ed39830c601eb7, type: 3}
+  tankPawnPrefab: {fileID: 486639565775781767, guid: fb9862a4043d7af4fb82819624611443, type: 3}
+  playerTwoPrefab: {fileID: 486639565775781767, guid: f53b9abfc1f6fb24eb4298b1b6157e0c, type: 3}
+  playerThreePrefab: {fileID: 486639565775781767, guid: 0278646a52890704eba2d42d50d0c0c1, type: 3}
+  playerFourPrefab: {fileID: 486639565775781767, guid: 95185f5120fbeb24c959f1e08218c61c, type: 3}
+  aiController: {fileID: 2070545785917735646, guid: 285f23d73348ca34cacf570adf5e8c7c, type: 3}
+  aiController2: {fileID: 3336417994427930528, guid: ff1953a58a8822b4db58c333499231aa, type: 3}
+  aiTank1: {fileID: 8151881917456498424, guid: 7cc7fdb7a2935774dae925ee81b87c31, type: 3}
+  aiTank2: {fileID: 8151881917456498424, guid: c785e0dca82674144b4d396caf84d540, type: 3}
+  aiTank3: {fileID: 8374170599475759838, guid: cd779db3a2d93e54180b63bdc7c2f72d, type: 3}
+  DropdownMenu: {fileID: 0}
+  mainAudioMixer: {fileID: 24100000, guid: a022ba62d5c42074a8759a2148dcc6ee, type: 2}
+  mainVolumeSlider: {fileID: 0}
+  FXSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  mainMenuMusic: {fileID: 0}
+  gameMusic: {fileID: 0}
+  heliPawnPrefab: {fileID: 1512114525988105965, guid: bb82a3eb158f0a84d8168d8b1a9df7f6, type: 3}
+  MainMenuStateObject: {fileID: 0}
+  OptionsScreenStateObject: {fileID: 0}
+  ControlsScreenStateObject: {fileID: 0}
+  PauseScreenStateObject: {fileID: 0}
+  MainGameStateObject: {fileID: 0}
+  VictoryScreenStateObject: {fileID: 0}
+  LoserScreenStateObject: {fileID: 0}
+  pauseManager: 0
+  players: []
+  playerOneScore: 0
+  playerTwoScore: 0
+  playerThreeScore: 0
+  playerFourSocre: 0
+  player1Score: {fileID: 0}
+  player2Score: {fileID: 0}
+  player3Score: {fileID: 0}
+  player4Score: {fileID: 0}
+  onePlayerGame: 0
+  twoPlayerGame: 0
+  threePlayerGame: 0
+  fourPlayerGame: 1
+  timerStartTime: 0
+  timerStarted: 0
+  matchLengthinMinutes: 5

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class HeliPawn : Pawn
 {
+    /// <summary>
+    /// Noting to see here :(
+    /// </summary>
+
     // Start is called before the first frame update
     protected override void Start()
     {

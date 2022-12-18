@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class HeliShooter : Shooter
 {
+    /// <summary>
+    /// Nothing here :(
+    /// </summary>
 
     public Transform firepointTransform;
     public Transform firepointTransform2;

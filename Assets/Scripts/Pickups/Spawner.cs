@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    //Timers for pickups
     public float timeBetween;
     public Pickup prefab;
     private Pickup pickUp;
@@ -35,6 +36,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    //Respawns the pickup after X seconds
     private void RespawnPickup()
     {
         pickUp = Instantiate(prefab, transform.position, Quaternion.identity);

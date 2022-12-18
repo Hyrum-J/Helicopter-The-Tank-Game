@@ -7,6 +7,7 @@ public class ArmorPowerup : PowerUp
 {
     public float armorFactor;
 
+    //Applies a sheild to the player by multipling their health by the armor percentage
     public override void Apply(PowerUpManager target)
     {
         HealthComponent targetHealth = target.GetComponent<HealthComponent>();
@@ -23,6 +24,7 @@ public class ArmorPowerup : PowerUp
 
     }
 
+    //Would remove but tis not need removal
     public override void Remove(PowerUpManager target)
     {
 

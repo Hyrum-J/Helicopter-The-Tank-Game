@@ -66,6 +66,12 @@ MonoBehaviour:
   aiTank2: {fileID: 8151881917456498424, guid: c785e0dca82674144b4d396caf84d540, type: 3}
   aiTank3: {fileID: 8374170599475759838, guid: cd779db3a2d93e54180b63bdc7c2f72d, type: 3}
   DropdownMenu: {fileID: 1923003890580636755, guid: d418ea42e423dcf46b6f10b79c48f668, type: 3}
+  mainAudioMixer: {fileID: 0}
+  mainVolumeSlider: {fileID: 0}
+  FXSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  mainMenuMusic: {fileID: 0}
+  gameMusic: {fileID: 0}
   heliPawnPrefab: {fileID: 1512114525988105965, guid: bb82a3eb158f0a84d8168d8b1a9df7f6, type: 3}
   MainMenuStateObject: {fileID: 7530828236277430093, guid: 549dfdf3bf408b6459e38412017349cc, type: 3}
   OptionsScreenStateObject: {fileID: 5923928154971075569, guid: 6cf628a9269ecf740a23fa099b165daf, type: 3}
@@ -80,8 +86,14 @@ MonoBehaviour:
   playerTwoScore: 0
   playerThreeScore: 0
   playerFourSocre: 0
+  player1Score: {fileID: 0}
+  player2Score: {fileID: 0}
+  player3Score: {fileID: 0}
+  player4Score: {fileID: 0}
   onePlayerGame: 0
   twoPlayerGame: 0
   threePlayerGame: 0
   fourPlayerGame: 1
-  PlayerLives: 3
+  timerStartTime: 0
+  timerStarted: 0
+  matchLengthinMinutes: 5

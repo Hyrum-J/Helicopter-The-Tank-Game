@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 
 public class TankPawn : Pawn
 {
+    //Shooting Sound
     public AudioSource shot;
 
     // Start is called before the first frame update
@@ -21,29 +23,37 @@ public class TankPawn : Pawn
         {
             canShoot = true;
         }
-        base.Update();
+            base.Update();
     }
 
+    //Moving and shooting for the tank
+    #region Movement
+
+    //Moves forward
     public override void MoveForward()
     {
         mover.Move(transform.forward, moveSpeed, maxMoveSpeed, "forward");
     }
 
+    //Moves backwards
     public override void MoveBackward()
     {
         mover.Move(transform.forward, -moveSpeed, maxBackwardMoveSpeed, "backward");
     }
 
+    //Turns Right
     public override void RotateClockwise()
     {
         mover.Rotate(turnSpeed);
     }
 
+    //Turns Left
     public override void RotateCounterClockwise()
     {
         mover.Rotate(-turnSpeed);
     }
 
+    //Helicopter Stuff
     public override void MoveUp()
     {
         Debug.Log("Not for tank");
@@ -69,6 +79,7 @@ public class TankPawn : Pawn
         Debug.Log("Not for tank");
     }
 
+    //Shoots
     public override void shoot()
     {
         if (canShoot == true)
@@ -88,6 +99,7 @@ public class TankPawn : Pawn
         }
     }
 
+    //For AI Rotation
     public override void RotateTowards(Vector3 targetPosition)
     {
         Vector3 vectorToTarget = targetPosition - transform.position;
@@ -97,5 +109,6 @@ public class TankPawn : Pawn
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
     }
+    #endregion
 
 }

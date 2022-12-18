@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class MapGeneration : MonoBehaviour
 {
+    //Empty Array that will hold the grid
     public GameObject[] gridPrefab;
+
+    //Number of rows and columns for generation
     public int rows;
     public int cols;
+
+    //How big the room is
     public float roomWidth;
     public float roomHeight;
     public Room[,] grid;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,11 +28,13 @@ public class MapGeneration : MonoBehaviour
         
     }
 
+    //Gets a random room from the list
     public GameObject RandomRoomPrefab()
     {
         return gridPrefab[Random.Range(0, gridPrefab.Length)];
     }
 
+    //Generates a random map
     public void GenerateMap()
     {
         grid = new Room[rows, cols];
@@ -35,11 +43,13 @@ public class MapGeneration : MonoBehaviour
         {
             for( int currentCol = 0; currentCol < cols; currentCol++)
             {
+                //Sets Location of room
                 float xPosition = currentRow * roomWidth;
                 float zPosition = currentCol * roomHeight;
                 Vector3 newPosition = new Vector3(xPosition, 0, zPosition);
                 Vector3 newSize = new Vector3(roomWidth / 50, roomHeight / 50, roomWidth / 50);
 
+                //Sets the actual room
                 GameObject temporaryRoomObj = Instantiate(RandomRoomPrefab(), newPosition, Quaternion.identity);
                 temporaryRoomObj.transform.parent = this.transform;
                 temporaryRoomObj.name = "Room_" + currentCol + ", " + currentRow;
@@ -47,6 +57,7 @@ public class MapGeneration : MonoBehaviour
                 Room tempRoom = temporaryRoomObj.GetComponent<Room>();
                 grid[currentRow, currentCol] = tempRoom;
 
+                //Disables doors based on location
                 if(currentCol == 0)
                 {
                     tempRoom.doorNorth.SetActive(false);

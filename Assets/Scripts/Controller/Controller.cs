@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Controller : MonoBehaviour
 {
-
+    //The pawn it is controlling
     public Pawn pawn;
 
     // Start is called before the first frame update
@@ -20,6 +20,7 @@ public abstract class Controller : MonoBehaviour
         
     }
 
+    //How it will take in inputs
     public abstract void ProcessInputs();
 
 }

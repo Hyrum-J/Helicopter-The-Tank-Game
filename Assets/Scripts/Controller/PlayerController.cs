@@ -5,7 +5,7 @@ using UnityEngine.Animations;
 
 public class PlayerController : Controller
 {
-
+    //Input Keys
     public KeyCode moveForwardKey;
     public KeyCode moveBackwardKey;
     public KeyCode rotateClockwiseKey;
@@ -18,6 +18,7 @@ public class PlayerController : Controller
     public KeyCode shootKey;
     public KeyCode PauseButton;
 
+    //Game manager
     public GameManager gameManager = GameManager.instance;
      
     // Start is called before the first frame update
@@ -41,6 +42,7 @@ public class PlayerController : Controller
         ProcessInputs();
     }
 
+    //Destroys any mention of this if it is destroyed
     public void OnDestroy()
     {
         if (GameManager.instance != null && GameManager.instance.players != null)
@@ -49,6 +51,7 @@ public class PlayerController : Controller
         }
     }
 
+    //Gets all the inputs and tells pawn to do what it needs to do
     public override void ProcessInputs()
     {
 
